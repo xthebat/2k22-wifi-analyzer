@@ -11,10 +11,10 @@ class WIFI {
     WIFI();
 
    public:
-    void scan(void);
+    void scan();
 
     // TODO
-    void flushData(void);
+    void flushData();
 
    public:
     const WIFITypes::Data& data() const;

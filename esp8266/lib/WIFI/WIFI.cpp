@@ -36,7 +36,7 @@ void WIFI::scan(void) {
     // }
 }
 
-void WIFI::flushData(void) {}
+void WIFI::flushData() {}
 
 const WIFITypes::Data& WIFI::data() const { return _data; }
 
