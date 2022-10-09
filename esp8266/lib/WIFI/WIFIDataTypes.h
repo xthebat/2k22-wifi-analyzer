@@ -3,16 +3,13 @@
 
 #include <WString.h>
 
+#include <cstdint>
+
 #include <map>
 #include <vector>
 
-struct WIFIDataType {
-    String ssid;
-    uint8_t enc_type;
-    int32_t rssi;
-    uint8_t* bssid;
-    int32_t channel;
-    bool is_hidden;
+enum class WIFIEncryptionType {
+
 };
 
 enum class WIFIFieldsID {
@@ -34,9 +31,5 @@ const std::map<WIFIFieldsID, String> WIFIHeaders = {
     {WIFIFieldsID::CHANNEL, "channel"},
     {WIFIFieldsID::IS_HIDDEN, "is_hidden"},
 };
-
-namespace WIFITypes {
-using Data = std::vector<WIFIDataType*>;
-}
 
 #endif

@@ -2,54 +2,55 @@
 #define REPRESENTER_H
 
 // #include "WIFI.h"
-#include <WIFIDataTypes.h>
+#include <WIFINetworkInfo.h>
 #include <WString.h>
+#include <iostream>
 
-struct WIFIRepresentation {
-    virtual String& repr(void) = 0;
+
+class Stream {
+public:
+    virtual int32_t write(uint8_t byte) = 0;
 };
 
-class CSVWIFIRepresentation : public WIFIRepresentation {
-   public:
-    String& repr(void) override;
 
-   private:
-    String _repr;
+class TextStream : public Stream {
+private:
+    std::string *text;
+public:
+    TextStream() {
+
+    }
+
+    int32_t write(uint8_t byte) override {
+
+    }
 };
 
-class PrintWIFIRepresentation : public WIFIRepresentation {
-   public:
-    String& repr(void) override;
 
-   private:
-    String _repr;
+class UartStream : public Stream {
+private:
+//    UartHandler *_uart;
+public:
+//    UartStream(UartHandler *uart) : _uart(uart) {
+//
+//    }
+
+    int32_t write(uint8_t byte) override {
+
+    }
 };
 
-class Representer {
-   public:
-    virtual WIFIRepresentation* convert(const WIFITypes::Data& wifi) = 0;
+
+template <typename T> class Writer {
+public:
+    virtual int32_t write(const T &data, Stream &stream) = 0;
 };
 
-class CSVRepresenter : public Representer {
-   public:
-    CSVRepresenter();
+class WIFINetworkInfoCSVWriter : public Writer<WIFINetworkInfoPtr> {
+public:
+    int32_t write(const WIFINetworkInfoPtr &data, Stream &stream) override {
 
-   public:
-    WIFIRepresentation* convert(const WIFITypes::Data& wifi) override;
-
-   private:
-    CSVWIFIRepresentation* repr;
-};
-
-class PrintRepresenter : public Representer {
-   public:
-    PrintRepresenter();
-
-   public:
-    WIFIRepresentation* convert(const WIFITypes::Data& wifi) override;
-
-   public:
-    PrintWIFIRepresentation* repr;
+    }
 };
 
 #endif

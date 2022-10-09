@@ -4,12 +4,12 @@
 
 #define LED 2
 
-WIFIController *wifi;
+WIFI *wifi;
 Representer *repr;
 UART *uart;
 
 void setup() {
-    wifi = new WIFIController(new WIFI);
+    wifi = new WIFI;
     repr = new CSVRepresenter;
     uart = UARTObject::Instance(115200);
 
@@ -19,7 +19,20 @@ void setup() {
 void loop() {
     if (wifi && repr && uart) {
         digitalWrite(LED, LOW);
-        auto representation = wifi->getRepr(repr);
+
+        wifi->scan();
+        auto representation = repr->convert(wifi->data());
+
+        TextStream stream;
+        UartStream uart_stream;
+        WIFINetworkInfoCSVWriter writer;
+        for (auto &it : wifi->data()) {
+            writer.write(it, uart_stream);
+        }
+        auto text = stream.get_text();
+
+        uart_stream.flush();
+
 
         if (representation) {
             uart->println(representation->repr());

@@ -5,33 +5,23 @@
 #include <Representer.h>
 
 #include "WIFIDataTypes.h"
+#include "WIFINetworkInfo.h"
 
 class WIFI {
-   public:
+public:
     WIFI();
 
-   public:
+public:
     void scan();
 
     // TODO
     void flushData();
 
-   public:
-    const WIFITypes::Data& data() const;
+public:
+    const WIFINetworkInfoVector &data() const;
 
-   private:
-    WIFITypes::Data _data;
-};
-
-class WIFIController {
-   public:
-    explicit WIFIController(WIFI* wifi = 0);
-
-   public:
-    WIFIRepresentation* getRepr(Representer* repr);
-
-   private:
-    WIFI* _wifi;
+private:
+    WIFINetworkInfoVector _data;
 };
 
 #endif

@@ -7,10 +7,8 @@ WIFI::WIFI() {
     WiFi.disconnect();
 }
 
-void WIFI::scan(void) {
-    int8_t scan_count = WiFi.scanNetworks(false,  // async
-                                          true    // show_hidden
-    );
+void WIFI::scan() {
+    auto scan_count = WiFi.scanNetworks(/*async*/ false, /*show_hidden*/ true);
 
     if (scan_count <= 0) {
         return;
@@ -18,7 +16,7 @@ void WIFI::scan(void) {
 
     _data.resize(scan_count);
     for (int8_t i = 0; i < scan_count; ++i) {
-        auto data = new WIFIDataType;
+        auto data = std::make_shared<WIFINetworkInfo>();
         WiFi.getNetworkInfo(i, data->ssid, data->enc_type, data->rssi,
                             data->bssid, data->channel, data->is_hidden);
         _data[i] = data;
@@ -38,11 +36,4 @@ void WIFI::scan(void) {
 
 void WIFI::flushData() {}
 
-const WIFITypes::Data& WIFI::data() const { return _data; }
-
-WIFIController::WIFIController(WIFI* wifi) : _wifi(wifi ? wifi : new WIFI) {}
-
-WIFIRepresentation* WIFIController::getRepr(Representer* repr) {
-    _wifi->scan();
-    return repr->convert(_wifi->data());
-}
+const WIFINetworkInfoVector& WIFI::data() const { return _data; }
